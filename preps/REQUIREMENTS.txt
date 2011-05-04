@@ -1,0 +1,13 @@
+Django==1.3 		# Nothing older. Requires 1.3 class-based view refactor.
+psycopg2
+python-dateutil		# rrule and other date matching for seasons.
+django-tastypie		# Powers the api.
+django-haystack		# Powers the site search.
+simplejson
+docutils		# Documentation.
+fabric			# Remote deployment.
+django-cronograph	# Cronned articles and stats updating.
+django-storages		# Static media handling.
+sorl-thumbnail		# Photo management and thumbnailing.
+pysolr			# Search backend. Trust no other.
+

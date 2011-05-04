@@ -1,0 +1,16 @@
+<pre><code>  __                                                                                     
+ /\ \    __                                                                              
+ \_\ \  /\_\     __      ___      __     ___           _____   _ __   __  _____    ____  
+ /'_` \ \/\ \  /'__`\  /' _ `\  /'_ `\  / __`\ _______/\ '__`\/\`'__\'__`\\ '__`\ /',__\ 
+/\ \L\ \ \ \ \/\ \L\.\_/\ \/\ \/\ \L\ \/\ \L\ \\______\ \ \L\ \ \ \/\  __/ \ \L\ \\__, `\
+\ \___,_\_\ \ \ \__/.\_\ \_\ \_\ \____ \ \____//______/\ \ ,__/\ \_\ \____\ \ ,__//\____/
+ \/__,_ /\ \_\ \/__/\/_/\/_/\/_/\/___L\ \/___/          \ \ \/  \/_/\/____/\ \ \/ \/___/ 
+        \ \____/                  /\____/                \ \_\              \ \_\        
+         \/___/                   \_/__/                  \/_/               \/_/        
+</pre></code>
+A simple template for a django preps sports site.
+h2. Features
+* Standard mid-atlantic sports for Fall, Winter and Spring.
+* Blog and photo gallery apps.
+* Full RESTful API for all major site resources.
+* Django's CRUD API for site management.
