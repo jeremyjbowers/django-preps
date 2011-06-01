@@ -1,7 +1,7 @@
-from django.db import models
-from django.core.templates import slugify
-from preps.apps.models import ModelBase
 import datetime
+from django.db import models
+from django.template.defaultfilters import slugify
+from preps.apps.models import ModelBase
 
 class Season(ModelBase):
     '''
@@ -54,8 +54,15 @@ class GameBase(ModelBase):
     season                          = models.ForeignKey(Season)
     game_date_time                  = models.DateTimeField(blank=True, null=True)
     week                            = models.IntegerField(max_length=2, default=0)
-    
-    status                          = models.CharField(max_length=255, choices=STATUS_CHOICES, default='')
+    STATUS_CHOICES = (
+        (0, 'Pregame'),
+        (1, 'In progress'),
+        (2, 'Delayed'),
+        (3, 'Postponed'),
+        (9, 'Complete'),
+    )
+    status                          = models.IntegerField(max_length=1, choices=STATUS_CHOICES, default=0)
+    status_description              = models.TextField(blank=True, null=True)
     
     class Meta:
         abstract=True

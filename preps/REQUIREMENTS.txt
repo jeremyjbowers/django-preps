@@ -6,7 +6,6 @@ django-haystack		# Powers the site search.
 simplejson
 docutils		# Documentation.
 fabric			# Remote deployment.
-django-cronograph	# Cronned articles and stats updating.
 django-storages		# Static media handling.
 sorl-thumbnail		# Photo management and thumbnailing.
 pysolr			# Search backend. Trust no other.

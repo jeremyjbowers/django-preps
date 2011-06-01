@@ -1,0 +1,7 @@
+media/*
+*.pyc
+*.pyo
+*.o
+*.so
+localsettings.py
+local_settings.py

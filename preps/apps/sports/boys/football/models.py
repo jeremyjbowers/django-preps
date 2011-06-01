@@ -1,9 +1,9 @@
-from django.db import models
-from django.core.templates import slugify
-from preps.apps.models import ModelBase
-from preps.apps.sports.models import Season, School, BaseGame
-from preps.apps.utils import functions as preps_utils
 import datetime
+from django.db import models
+from django.template.defaultfilters import slugify
+from preps.apps.models import ModelBase
+from preps.apps.sports.models import Season, School, GameBase
+from preps.apps.utils import functions as preps_utils
 
 class Team(ModelBase):
     '''
@@ -77,19 +77,19 @@ class Game(GameBase):
     def save(self, *args, **kwargs):
         name_string                 = u'Week %s %s at %s' % (self.week, self.away_team, self.home_team)
         self.slug                   = slugify(name_string)
-        self.home_total_score   =   self.home_q1_score  +
-                                    self.home_q2_score  +
-                                    self.home_q3_score  +
-                                    self.home_q4_score  +
-                                    self.home_ot1_score +
-                                    self.home_ot2_score +
+        self.home_total_score   =   self.home_q1_score+\
+                                    self.home_q2_score+\
+                                    self.home_q3_score+\
+                                    self.home_q4_score+\
+                                    self.home_ot1_score+\
+                                    self.home_ot2_score+\
                                     self.home_ot3_score
-        self.away_total_score   =   self.away_q1_score  +
-                                    self.away_q2_score  +
-                                    self.away_q3_score  +
-                                    self.away_q4_score  +
-                                    self.away_ot1_score +
-                                    self.away_ot2_score +
+        self.away_total_score   =   self.away_q1_score+\
+                                    self.away_q2_score+\
+                                    self.away_q3_score+\
+                                    self.away_q4_score+\
+                                    self.away_ot1_score+\
+                                    self.away_ot2_score+\
                                     self.away_ot3_score
         super(Game, self).save(*args, **kwargs)
     
