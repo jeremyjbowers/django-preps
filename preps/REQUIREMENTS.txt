@@ -9,4 +9,4 @@ fabric			# Remote deployment.
 django-storages		# Static media handling.
 sorl-thumbnail		# Photo management and thumbnailing.
 pysolr			# Search backend. Trust no other.
-
+ipython

@@ -3,21 +3,54 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from preps.apps.models import ModelBase
 
+class Sport(ModelBase):
+    GENDER_CHOICES = (
+        (0, 'Boys'),
+        (1, 'Girls'),
+        (2, 'Coed'),        
+    )
+    name                            = models.CharField(max_length=255)
+    gender                          = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    
+    def __unicode__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Sport, self).save(*args, **kwargs)
+    
+
+class Conference(ModelBase):
+    '''
+    Represents a single conference.
+    '''
+    name                            = models.CharField(max_length=255)
+    sport                           = models.ForeignKey(Sport)
+    
+    def __unicode__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Season, self).save(*args, **kwargs)
+    
+
 class Season(ModelBase):
     '''
     Represents a single sport season.
     '''
-    school_year                     = models.IntegerField(max_length=4, help_text="Integer representing the year of the season, e.g., 2011.")
+    name                            = models.IntegerField(max_length=4, help_text="Integer representing the year of the season, e.g., 2011.")
     start_date                      = models.DateField(blank=True, null=True, help_text="Start date for this season.")
     end_date                        = models.DateField(blank=True, null=True, help_text="End date for this season.")
+    sport                           = models.ForeignKey(Sport)
     
     def __unicode__(self):
         return self.name
-        
+    
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(u'%s' % self.name)
         super(Season, self).save(*args, **kwargs)
-        
+    
 
 class School(ModelBase):
     '''
@@ -45,13 +78,33 @@ class School(ModelBase):
     
     def __unicode__(self):
         return self.name
-        
+    
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(School, self).save(*args, **kwargs)
+    
+
+class Player(ModelBase):
+    '''
+    A representation of a player.
+    '''
+    school                          = models.ForeignKey(School)
+    first_name                      = models.CharField(max_length=255)
+    last_name                       = models.CharField(max_length=255)
+    middle_name                     = models.CharField(max_length=255, default='')
+    height_feet                     = models.IntegerField(max_length=1, default=0)
+    height_inches                   = models.IntegerField(max_length=1, default=0)
+    weight_pounds                   = models.IntegerField(max_length=3, default=0)
+    
+    def __unicode__(self):
+        return self.first_name, self.middle_name, self.last_name
+    
+    def save(self, *args, **kwargs):
+        self.slug                   = slugify(u'%s %s' %(self.first_name, self.last_name))
+        super(Player, self).save(*args, **kwargs)
+    
 
 class GameBase(ModelBase):
-    season                          = models.ForeignKey(Season)
     game_date_time                  = models.DateTimeField(blank=True, null=True)
     week                            = models.IntegerField(max_length=2, default=0)
     STATUS_CHOICES = (
