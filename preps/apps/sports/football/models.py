@@ -7,7 +7,7 @@ from preps.apps.utils import functions as preps_utils
 
 class FootballFields(models.Model):
     '''
-    A representation of stats fields for Football.
+    Represents statistics fields for Football. Used like a mixin.
     '''
     rushing_rushes                  = models.IntegerField(default=0)
     rushing_yards                   = models.IntegerField(default=0)
@@ -36,7 +36,7 @@ class FootballFields(models.Model):
 
 class Position(ModelBase):
     '''
-    A representation of a single Football position.
+    Represents a single Football position.
     '''
     name                            = models.CharField(max_length=255)
     short_name                      = models.CharField(max_length=5, help_text="5 characters or fewer.")
@@ -45,16 +45,18 @@ class Position(ModelBase):
         return self.name
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
         super(Position, self).save(*args, **kwargs)
     
 
 class Game(GameBase):
     '''
-    A representation of a Football game.
+    Represents a single Football game.
     '''
     home_team                       = models.ForeignKey(School, related_name="football_home_team", null=True)
     away_team                       = models.ForeignKey(School, related_name="football_away_team", null=True)
+    season                          = models.ForeignKey(Season, related_name="football_game_season")
     home_q1_score                   = models.IntegerField(default=0)
     home_q2_score                   = models.IntegerField(default=0)
     home_q3_score                   = models.IntegerField(default=0)
@@ -71,13 +73,15 @@ class Game(GameBase):
     away_ot2_score                  = models.IntegerField(default=0)
     away_ot3_score                  = models.IntegerField(default=0)
     away_total_score                = models.IntegerField(default=0)
+    week                            = models.IntegerField(max_length=2, default=0)
+    game_of_the_week                = models.BooleanField(default=False)
     
     def __unicode__(self):
         return u'%s, week %s: %s at %s' % (self.season, self.week, self.away_team, self.home_team)
         
     def save(self, *args, **kwargs):
-        name_string                 = self.__unicode__
-        self.slug                   = slugify(name_string)
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
         self.home_total_score   =   self.home_q1_score+\
                                     self.home_q2_score+\
                                     self.home_q3_score+\
@@ -97,19 +101,23 @@ class Game(GameBase):
 
 class TeamGame(GameBase, FootballFields):
     '''
-    A representation of a single Football team's performance in a single game.
+    Represents a single Football team's performance in a single game.
     '''
     team                            = models.ForeignKey(School, related_name="football_teamgame_team",)
     game                            = models.ForeignKey(Game, related_name="football_teamgame_game",)
-    season                          = models.ForeignKey(Season, related_name="football_teamgame_season")
     
     def __unicode__(self):
         return u'Week %s: %s stats (%s)' % (self.game.week, self.team, self.id)
     
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(TeamGame, self).save(*args, **kwargs)
+    
 
 class TeamSeason(ModelBase, FootballFields):
     '''
-    A representation of a single Football team's performance in a single season.
+    Represents a single Football team's performance in a single season.
     '''
     team                            = models.ForeignKey(School, related_name="football_teamseason_team")
     season                          = models.ForeignKey(Season, related_name="football_teamseason_season")
@@ -135,10 +143,15 @@ class TeamSeason(ModelBase, FootballFields):
     # Defines a field "schedule" as a dynamic property of the get_schedule() function.
     schedule = property(get_schedule)
     
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(TeamSeason, self).save(*args, **kwargs)
+    
 
 class PlayerGame(ModelBase, FootballFields):
     '''
-    A representation of a single Football player's performance in a single game.
+    Represents a single Football player's performance in a single game.
     '''
     player                          = models.ForeignKey(Player, related_name="football_playergame_player")
     game                            = models.ForeignKey(Game, related_name="football_playergame_game")
@@ -153,6 +166,8 @@ class PlayerGame(ModelBase, FootballFields):
         return u'Week %s: %s stats (%s)' % (self.game.week, self.player, self.id)
     
     def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
         self.rushing_yards_per_attempt      = float(floatformat(preps_utils.handle_percents(self.rushing_yards, self.rushing_attempts), 1))
         self.receiving_yards_per_reception  = float(floatformat(preps_utils.handle_percents(self.receiving_yards, self.receptions), 1))
         self.passing_completion_percentage  = float(floatformat(preps_utils.handle_percents(self.passing_completions, self.passing_attempts), 3))
@@ -172,7 +187,7 @@ class PlayerGame(ModelBase, FootballFields):
 
 class PlayerSeason(ModelBase, FootballFields):
     '''
-    A representation of a single Football player's season performance.
+    Represents a single Football player's season performance.
     '''
     player                          = models.ForeignKey(Player, related_name="football_playerseason_player")
     season                          = models.ForeignKey(Season, related_name="football_playerseason_season")
@@ -189,6 +204,8 @@ class PlayerSeason(ModelBase, FootballFields):
         return u'Week %s: %s stats (%s)' % (self.game.week, self.player, self.id)
     
     def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
         self.rushing_yards_per_attempt      = float(floatformat(preps_utils.handle_percents(self.rushing_yards, self.rushing_attempts), 1))
         self.receiving_yards_per_reception  = float(floatformat(preps_utils.handle_percents(self.receiving_yards, self.receptions), 1))
         self.passing_completion_percentage  = float(floatformat(preps_utils.handle_percents(self.passing_completions, self.passing_attempts), 3))

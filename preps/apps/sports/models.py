@@ -4,19 +4,23 @@ from django.template.defaultfilters import slugify
 from preps.apps.models import ModelBase
 
 class Sport(ModelBase):
+    '''
+    Represents a single sport.
+    '''
     GENDER_CHOICES = (
         (0, 'Boys'),
         (1, 'Girls'),
-        (2, 'Coed'),        
+        (2, 'Coed'),
     )
     name                            = models.CharField(max_length=255)
-    gender                          = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    gender                          = models.IntegerField(max_length=1, choices=GENDER_CHOICES)
     
     def __unicode__(self):
-        return self.name
+        return u'%s %s' % (self.get_gender_display(), self.name)
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        if self.slug == None or self.slug == '':
+            self.slug               = slugify(self.name)
         super(Sport, self).save(*args, **kwargs)
     
 
@@ -28,11 +32,12 @@ class Conference(ModelBase):
     sport                           = models.ForeignKey(Sport)
     
     def __unicode__(self):
-        return self.name
+        return u'%s: %s' % (self.name, self.sport)
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Season, self).save(*args, **kwargs)
+        if self.slug == None or self.slug == '':
+            self.slug               = slugify(self.__unicode__())
+        super(Conference, self).save(*args, **kwargs)
     
 
 class Season(ModelBase):
@@ -45,10 +50,11 @@ class Season(ModelBase):
     sport                           = models.ForeignKey(Sport)
     
     def __unicode__(self):
-        return self.name
+        return u'%s %s' % (self.sport, self.name)
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(u'%s' % self.name)
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
         super(Season, self).save(*args, **kwargs)
     
 
@@ -61,52 +67,49 @@ class School(ModelBase):
     local                           = models.BooleanField(default=False)
     url                             = models.URLField(blank=True, null=True)
     mascot                          = models.CharField(max_length=255, blank=True, null=True)
-    boys_baseball                   = models.BooleanField(default=False)
-    boys_crosscountry               = models.BooleanField(default=False)
-    boys_golf                       = models.BooleanField(default=False)
-    boys_rugby                      = models.BooleanField(default=False)
-    boys_swimming                   = models.BooleanField(default=False)
-    boys_track                      = models.BooleanField(default=False)
-    boys_wrestling                  = models.BooleanField(default=False)
-    boys_badminton                  = models.BooleanField(default=False)
-    boys_basketball                 = models.BooleanField(default=False)
+    logo_url                        = models.URLField(blank=True, null=True)
+    use_custom_logo                 = models.BooleanField(default=False)
     boys_football                   = models.BooleanField(default=False)
-    boys_lacrosse                   = models.BooleanField(default=False)
-    boys_soccer                     = models.BooleanField(default=False)
-    boys_tennis                     = models.BooleanField(default=False)
-    boys_waterpolo                  = models.BooleanField(default=False)
+    girls_volleyball                = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return self.name
+        if self.mascot:
+            return u'%s %s' % (self.name, self.mascot)
+        else:
+            return self.name
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        if self.slug == None or self.slug == '':
+            self.slug           = slugify(self.__unicode__())
         super(School, self).save(*args, **kwargs)
     
 
 class Player(ModelBase):
     '''
-    A representation of a player.
+    Represents a single player.
     '''
     school                          = models.ForeignKey(School)
     first_name                      = models.CharField(max_length=255)
     last_name                       = models.CharField(max_length=255)
-    middle_name                     = models.CharField(max_length=255, default='')
+    middle_name                     = models.CharField(max_length=255, blank=True, null=True)
     height_feet                     = models.IntegerField(max_length=1, default=0)
-    height_inches                   = models.IntegerField(max_length=1, default=0)
+    height_inches                   = models.IntegerField(max_length=2, default=0)
     weight_pounds                   = models.IntegerField(max_length=3, default=0)
     
     def __unicode__(self):
-        return self.first_name, self.middle_name, self.last_name
+        return u'%s %s' % (self.first_name, self.last_name)
     
     def save(self, *args, **kwargs):
-        self.slug                   = slugify(u'%s %s' %(self.first_name, self.last_name))
+        if self.slug == None or self.slug == '':        
+            self.slug               = slugify(self.__unicode__())
         super(Player, self).save(*args, **kwargs)
     
 
 class GameBase(ModelBase):
+    '''
+    Abstract base class for games.
+    '''
     game_date_time                  = models.DateTimeField(blank=True, null=True)
-    week                            = models.IntegerField(max_length=2, default=0)
     STATUS_CHOICES = (
         (0, 'Pregame'),
         (1, 'In progress'),
@@ -116,6 +119,17 @@ class GameBase(ModelBase):
     )
     status                          = models.IntegerField(max_length=1, choices=STATUS_CHOICES, default=0)
     status_description              = models.TextField(blank=True, null=True)
+    TYPE_CHOICES = (
+        (0, 'Preseason'),
+        (1, 'Regular season'),
+        (9, 'Playoff'),
+    )
+    game_type                       = models.IntegerField(max_length=1, choices=TYPE_CHOICES, default=0)
+    featured_game                   = models.BooleanField(default=False)
+    game_location                   = models.CharField(max_length=255, blank=True, null=True)
+    game_location_address           = models.TextField(blank=True, null=True)
+    game_location_description       = models.TextField(blank=True, null=True)
+    conference_game                 = models.BooleanField(default=False)
     
     class Meta:
         abstract=True

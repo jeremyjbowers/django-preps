@@ -7,7 +7,7 @@ from preps.apps.utils import functions as preps_utils
 
 class VolleyballFields(models.Model):
     '''
-    A representation of stats fields for Volleyball.
+    Represents statistics fields for Volleyball. Used like a mixin.
     '''
     volleyball_games                = models.IntegerField(default=0)
     volleyball_aces                 = models.IntegerField(default=0)
@@ -30,7 +30,8 @@ class Position(ModelBase):
         return self.name
     
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
         super(Position, self).save(*args, **kwargs)
     
 
@@ -38,6 +39,7 @@ class Game(GameBase):
     '''
     A representation of a Volleyball game.
     '''
+    season                          = models.ForeignKey(Season, related_name="volleyball_game_season")
     home_game_1_score               = models.IntegerField(default=0)
     home_game_2_score               = models.IntegerField(default=0)
     home_game_3_score               = models.IntegerField(default=0)
@@ -60,8 +62,8 @@ class Game(GameBase):
     def save(self, *args, **kwargs):
         
         # Slugify!
-        name_string                 = u'Week %s %s at %s' % (self.week, self.away_team, self.home_team)
-        self.slug                   = slugify(name_string)
+        if self.slug == None or self.slug == '':
+            self.slug               = slugify(u'Week %s %s at %s' % (self.week, self.away_team, self.home_team))
         
         # Set up a list of two-tuples representing home/away scores.
         games = [('home_game_%d_score', 'away_game_%d_score') % (idx, idx) for idx in range(1,5)]
@@ -84,19 +86,23 @@ class Game(GameBase):
 
 class TeamGame(GameBase, VolleyballFields):
     '''
-    A representation of a single team's performance in a single game.
+    Represents single Volleyball team's performance in a single game.
     '''
     team                            = models.ForeignKey(School, related_name="volleyball_teamgame_team")
     game                            = models.ForeignKey(Game, related_name="volleyball_teamgame_game")
-    season                          = models.ForeignKey(Season, related_name="volleyball_teamgame_season")
     
     def __unicode__(self):
         return u'Week %s: %s stats (%s)' % (self.game.week, self.team, self.id)
     
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug               = slugify(self.__unicode__())
+        super(TeamSeason, self).save(*args, **kwargs)
+    
 
 class TeamSeason(ModelBase, VolleyballFields):
     '''
-    A representation of a single Volleyball team's performance over a season.
+    Represents a single Volleyball team's performance over a season.
     '''
     team                            = models.ForeignKey(School, related_name="volleyball_teamseason_team")
     season                          = models.ForeignKey(Season, related_name="volleyball_teamseason_season")
@@ -122,10 +128,14 @@ class TeamSeason(ModelBase, VolleyballFields):
     # Defines a field "schedule" as a dynamic property of the get_schedule() function.
     schedule = property(get_schedule)
     
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug               = slugify(self.__unicode__())
+        super(TeamSeason, self).save(*args, **kwargs)
 
 class PlayerGame(GameBase, VolleyballFields):
     '''
-    A representation of a single Volleyball player's performance in a single game.
+    Represents a single Volleyball player's performance in a single game.
     '''
     player                          = models.ForeignKey(Player, related_name="volleyball_playergame_player")
     game                            = models.ForeignKey(Game, related_name="volleyball_playergame_game")
@@ -137,10 +147,15 @@ class PlayerGame(GameBase, VolleyballFields):
     def save(self, *args, **kwargs):
         super(PlayerGame, self).save(*args, **kwargs)
     
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug               = slugify(self.__unicode__())
+        super(PlayerGame, self).save(*args, **kwargs)
+    
 
 class PlayerSeason(ModelBase, VolleyballFields):
     '''
-    A representation of a single Volleyball player's performance over a single season.
+    Represents a single Volleyball player's performance over a single season.
     '''
     player                          = models.ForeignKey(Player, related_name="volleyball_playerseason_player")
     season                          = models.ForeignKey(Season, related_name="volleyball_playerseason_season")
@@ -152,19 +167,7 @@ class PlayerSeason(ModelBase, VolleyballFields):
         return u'Week %s: %s stats (%s)' % (self.game.week, self.player, self.id)
     
     def save(self, *args, **kwargs):
-        # self.rushing_yards_per_attempt      = float(floatformat(preps_utils.handle_percents(self.rushing_yards, self.rushing_attempts), 1))
-        # self.receiving_yards_per_reception  = float(floatformat(preps_utils.handle_percents(self.receiving_yards, self.receptions), 1))
-        # self.passing_completion_percentage  = float(floatformat(preps_utils.handle_percents(self.passing_completions, self.passing_attempts), 3))
-        # self.passing_yards_per_attempt      = float(floatformat(preps_utils.handle_percents(self.passing_yards, self.passing_attempts), 1))
-        # if self.passing_attempts == 0:
-        #     self.passing_rating = 0.0
-        # else:
-        #     self.passing_rating             = float(floatformat(handle_hss_passer_rating(
-        #         self.passing_yards,
-        #         self.passing_touchdowns,
-        #         self.passing_completions,
-        #         self.passing_interceptions,
-        #         self.passing_attempts
-        #     ), 1))
+        if self.slug == None or self.slug == '':
+            self.slug               = slugify(self.__unicode__())
         super(PlayerSeason, self).save(*args, **kwargs)
     
