@@ -32,7 +32,7 @@ class FootballFields(models.Model):
     defense_fumbles_forced          = models.IntegerField(default=0)
     
     class Meta:
-        abstract = True
+        abstract                    = True
 
 class Position(ModelBase):
     '''

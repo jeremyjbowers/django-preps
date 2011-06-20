@@ -20,7 +20,7 @@ class Sport(ModelBase):
     
     def save(self, *args, **kwargs):
         if self.slug == None or self.slug == '':
-            self.slug               = slugify(self.name)
+            self.slug               = slugify(self.__unicode__())
         super(Sport, self).save(*args, **kwargs)
     
 
@@ -54,7 +54,7 @@ class Season(ModelBase):
     
     def save(self, *args, **kwargs):
         if self.slug == None or self.slug == '':
-            self.slug = slugify(self.__unicode__())
+            self.slug               = slugify(self.__unicode__())
         super(Season, self).save(*args, **kwargs)
     
 
@@ -80,7 +80,7 @@ class School(ModelBase):
     
     def save(self, *args, **kwargs):
         if self.slug == None or self.slug == '':
-            self.slug           = slugify(self.__unicode__())
+            self.slug               = slugify(self.__unicode__())
         super(School, self).save(*args, **kwargs)
     
 
