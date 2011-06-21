@@ -9,12 +9,12 @@ class VolleyballFields(models.Model):
     '''
     Represents statistics fields for Volleyball. Used like a mixin.
     '''
-    volleyball_games                = models.IntegerField(default=0)
-    volleyball_aces                 = models.IntegerField(default=0)
-    volleyball_assists              = models.IntegerField(default=0)
-    volleyball_blocks               = models.IntegerField(default=0)
-    volleyball_digs                 = models.IntegerField(default=0)
-    volleyball_kills                = models.IntegerField(default=0)
+    volleyball_games                = models.IntegerField(default=0, blank=True)
+    volleyball_aces                 = models.IntegerField(default=0, blank=True)
+    volleyball_assists              = models.IntegerField(default=0, blank=True)
+    volleyball_blocks               = models.IntegerField(default=0, blank=True)
+    volleyball_digs                 = models.IntegerField(default=0, blank=True)
+    volleyball_kills                = models.IntegerField(default=0, blank=True)
     
     class Meta:
         abstract                    = True
@@ -40,18 +40,18 @@ class Game(GameBase):
     A representation of a Volleyball game.
     '''
     season                          = models.ForeignKey(Season, related_name="volleyball_game_season")
-    home_game_1_score               = models.IntegerField(default=0)
-    home_game_2_score               = models.IntegerField(default=0)
-    home_game_3_score               = models.IntegerField(default=0)
-    home_game_4_score               = models.IntegerField(default=0)
-    home_game_5_score               = models.IntegerField(default=0)
-    away_game_1_score               = models.IntegerField(default=0)
-    away_game_2_score               = models.IntegerField(default=0)
-    away_game_3_score               = models.IntegerField(default=0)
-    away_game_4_score               = models.IntegerField(default=0)
-    away_game_5_score               = models.IntegerField(default=0)
-    home_games_won                  = models.IntegerField(default=0)
-    away_games_won                  = models.IntegerField(default=0)
+    home_game_1_score               = models.IntegerField(default=0, blank=True)
+    home_game_2_score               = models.IntegerField(default=0, blank=True)
+    home_game_3_score               = models.IntegerField(default=0, blank=True)
+    home_game_4_score               = models.IntegerField(default=0, blank=True)
+    home_game_5_score               = models.IntegerField(default=0, blank=True)
+    away_game_1_score               = models.IntegerField(default=0, blank=True)
+    away_game_2_score               = models.IntegerField(default=0, blank=True)
+    away_game_3_score               = models.IntegerField(default=0, blank=True)
+    away_game_4_score               = models.IntegerField(default=0, blank=True)
+    away_game_5_score               = models.IntegerField(default=0, blank=True)
+    home_games_won                  = models.IntegerField(default=0, blank=True)
+    away_games_won                  = models.IntegerField(default=0, blank=True)
     override_game_scores            = models.BooleanField(default=False)
     home_team                       = models.ForeignKey(School, related_name="volleyball_home_team", null=True)
     away_team                       = models.ForeignKey(School, related_name="volleyball_away_team", null=True)
@@ -106,14 +106,14 @@ class TeamSeason(ModelBase, VolleyballFields):
     '''
     team                            = models.ForeignKey(School, related_name="volleyball_teamseason_team")
     season                          = models.ForeignKey(Season, related_name="volleyball_teamseason_season")
-    wins                            = models.IntegerField(default=0)
-    losses                          = models.IntegerField(default=0)
-    points_for                      = models.IntegerField(default=0)
-    points_against                  = models.IntegerField(default=0)
-    place                           = models.IntegerField(default=0)
+    wins                            = models.IntegerField(default=0, blank=True)
+    losses                          = models.IntegerField(default=0, blank=True)
+    points_for                      = models.IntegerField(default=0, blank=True)
+    points_against                  = models.IntegerField(default=0, blank=True)
+    place                           = models.IntegerField(default=0, blank=True)
     conference                      = models.ForeignKey(Conference, related_name="volleyball_teamseason_conference")
-    conference_wins                 = models.IntegerField(default=0)
-    conference_losses               = models.IntegerField(default=0)
+    conference_wins                 = models.IntegerField(default=0, blank=True)
+    conference_losses               = models.IntegerField(default=0, blank=True)
     
     def __unicode__(self):
         return u'Season %s: %s stats (%s)' % (self.season.name, self.team, self.id)
@@ -156,9 +156,9 @@ class PlayerSeason(ModelBase, VolleyballFields):
     '''
     player                          = models.ForeignKey(Player, related_name="volleyball_playerseason_player")
     season                          = models.ForeignKey(Season, related_name="volleyball_playerseason_season")
-    position                        = models.ForeignKey(Position, related_name="volleyball_playerseason_position")
-    number                          = models.IntegerField(blank=True, null=True)
-    games                           = models.IntegerField(default=0)
+    position                        = models.ManyToManyField(Position, related_name="volleyball_playerseason_position")
+    number                          = models.IntegerField(default=0, blank=True)
+    games                           = models.IntegerField(default=0, blank=True)
     
     def __unicode__(self):
         return u'Week %s: %s stats (%s)' % (self.game.week, self.player, self.id)

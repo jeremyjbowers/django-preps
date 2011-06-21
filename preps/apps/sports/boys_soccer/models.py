@@ -9,9 +9,9 @@ class BoysSoccerFields(models.Model):
     '''
     Represents statistics fields for Girls Soccer. Used like a mixin.
     '''
-    soccer_games                    = models.IntegerField(default=0)
-    soccer_goals                    = models.IntegerField(default=0)
-    soccer_assists                  = models.IntegerField(default=0)
+    soccer_games                    = models.IntegerField(default=0, blank=True)
+    soccer_goals                    = models.IntegerField(default=0, blank=True)
+    soccer_assists                  = models.IntegerField(default=0, blank=True)
         
     class Meta:
         abstract                    = True
@@ -37,12 +37,12 @@ class Game(GameBase):
     A representation of a Girls Soccer game.
     '''
     season                          = models.ForeignKey(Season, related_name="boys_soccer_game_season")
-    home_h1_score                   = models.IntegerField(default=0)
-    home_h2_score                   = models.IntegerField(default=0)
-    home_ot_score                   = models.IntegerField(default=0)
-    away_h1_score                   = models.IntegerField(default=0)
-    away_h2_score                   = models.IntegerField(default=0)
-    away_ot_score                   = models.IntegerField(default=0)
+    home_h1_score                   = models.IntegerField(default=0, blank=True)
+    home_h2_score                   = models.IntegerField(default=0, blank=True)
+    home_ot_score                   = models.IntegerField(default=0, blank=True)
+    away_h1_score                   = models.IntegerField(default=0, blank=True)
+    away_h2_score                   = models.IntegerField(default=0, blank=True)
+    away_ot_score                   = models.IntegerField(default=0, blank=True)
     override_game_scores            = models.BooleanField(default=False)
     home_team                       = models.ForeignKey(School, related_name="boys_soccer_home_team", null=True)
     away_team                       = models.ForeignKey(School, related_name="boys_soccer_away_team", null=True)
@@ -78,14 +78,14 @@ class TeamSeason(ModelBase, BoysSoccerFields):
     '''
     team                            = models.ForeignKey(School, related_name="boys_soccer_teamseason_team")
     season                          = models.ForeignKey(Season, related_name="boys_soccer_teamseason_season")
-    wins                            = models.IntegerField(default=0)
-    losses                          = models.IntegerField(default=0)
-    points_for                      = models.IntegerField(default=0)
-    points_against                  = models.IntegerField(default=0)
-    place                           = models.IntegerField(default=0)
+    wins                            = models.IntegerField(default=0, blank=True)
+    losses                          = models.IntegerField(default=0, blank=True)
+    points_for                      = models.IntegerField(default=0, blank=True)
+    points_against                  = models.IntegerField(default=0, blank=True)
+    place                           = models.IntegerField(default=0, blank=True)
     conference                      = models.ForeignKey(Conference, related_name="boys_soccer_teamseason_conference")
-    conference_wins                 = models.IntegerField(default=0)
-    conference_losses               = models.IntegerField(default=0)
+    conference_wins                 = models.IntegerField(default=0, blank=True)
+    conference_losses               = models.IntegerField(default=0, blank=True)
     
     def __unicode__(self):
         return u'Season %s: %s stats (%s)' % (self.season.name, self.team, self.id)
@@ -130,9 +130,9 @@ class PlayerSeason(ModelBase, BoysSoccerFields):
     '''
     player                          = models.ForeignKey(Player, related_name="boys_soccer_playerseason_player")
     season                          = models.ForeignKey(Season, related_name="boys_soccer_playerseason_season")
-    position                        = models.ForeignKey(Position, related_name="boys_soccer_playerseason_position")
-    number                          = models.IntegerField(blank=True, null=True)
-    games                           = models.IntegerField(default=0)
+    position                        = models.ManyToManyField(Position, related_name="boys_soccer_playerseason_position")
+    number                          = models.IntegerField(default=0, blank=True)
+    games                           = models.IntegerField(default=0, blank=True)
     
     def __unicode__(self):
         return u'Week %s: %s stats (%s)' % (self.game.week, self.player, self.id)
