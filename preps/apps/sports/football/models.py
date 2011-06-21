@@ -156,12 +156,6 @@ class PlayerGame(ModelBase, FootballFields):
     '''
     player                          = models.ForeignKey(Player, related_name="football_playergame_player")
     game                            = models.ForeignKey(Game, related_name="football_playergame_game")
-    season                          = models.ForeignKey(Season, related_name="football_playergame_season")
-    rushing_yards_per_attempt       = models.FloatField(default=0.0)
-    receiving_yards_per_reception   = models.FloatField(default=0.0)
-    passing_yards_per_attempt       = models.FloatField(default=0.0)
-    passing_completion_percentage   = models.FloatField(default=0.0)
-    passing_rating                  = models.FloatField(default=0.0)
     
     def __unicode__(self):
         return u'Week %s: %s stats (%s)' % (self.game.week, self.player, self.id)

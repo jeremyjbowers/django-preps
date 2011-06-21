@@ -115,7 +115,7 @@ class GameBase(ModelBase):
         (1, 'In progress'),
         (2, 'Delayed'),
         (3, 'Postponed'),
-        (9, 'Complete'),
+        (9, 'Final'),
     )
     status                          = models.IntegerField(max_length=1, choices=STATUS_CHOICES, default=0)
     status_description              = models.TextField(blank=True, null=True)
@@ -130,6 +130,8 @@ class GameBase(ModelBase):
     game_location_address           = models.TextField(blank=True, null=True)
     game_location_description       = models.TextField(blank=True, null=True)
     conference_game                 = models.BooleanField(default=False)
+    game_result_headline            = models.CharField(max_length=255, blank=True, null=True)
+    game_result_summary             = models.TextField(blank=True, null=True)
     
     class Meta:
         abstract=True
