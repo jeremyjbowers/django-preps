@@ -9,9 +9,6 @@ class GameAdmin(admin.ModelAdmin):
         ('Administration', {
             'fields': (('featured_game', 'conference_game'),)
         }),
-        ('Location', {
-            'fields': ('game_location', 'game_location_address', 'game_location_description')
-        }),
         ('Status', {
             'fields': ('status', 'status_description')
         }),
@@ -22,6 +19,14 @@ class GameAdmin(admin.ModelAdmin):
             ),
             'classes': ('scoreboard',),
         }),
+        ('Location', {
+            'fields': ('game_location', 'game_location_address', 'game_location_description'),
+            'classes': ('collapse',),
+        }),
+        ('Summary', {
+            'fields': ('game_result_headline', 'game_result_summary'),
+            'classes': ('scoreboard', 'collapse'),
+        })
     )
 
 admin.site.register(Game, GameAdmin)

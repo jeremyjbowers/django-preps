@@ -9,9 +9,6 @@ class GameAdmin(admin.ModelAdmin):
         ('Administration', {
             'fields': (('game_of_the_week', 'featured_game', 'conference_game'),)
         }),
-        ('Location', {
-            'fields': ('game_location', 'game_location_address', 'game_location_description')
-        }),
         ('Status', {
             'fields': ('status', 'status_description')
         }),
@@ -23,7 +20,7 @@ class GameAdmin(admin.ModelAdmin):
             ),
             'classes': ('scoreboard',),
         }),
-        ('Scoreboard', {
+        (None, {
             'fields': (
                 ('away_q1_score', 'away_q2_score', 'away_q3_score', 'away_q4_score'), 
                 ('away_ot1_score', 'away_ot2_score', 'away_ot3_score'), 
@@ -31,6 +28,14 @@ class GameAdmin(admin.ModelAdmin):
             ),
             'classes': ('scoreboard',),
         }),
+        ('Location', {
+            'fields': ('game_location', 'game_location_address', 'game_location_description'),
+            'classes': ('collapse',),
+        }),
+        ('Summary', {
+            'fields': ('game_result_headline', 'game_result_summary'),
+            'classes': ('scoreboard', 'collapse'),
+        })
     )
 
 admin.site.register(Game, GameAdmin)
