@@ -22,4 +22,6 @@ INSTALLED_APPS = (
     'preps.apps.sports.boys_lacrosse',
     'preps.apps.sports.girls_basketball',
     'preps.apps.sports.boys_basketball',
+    'preps.apps.sports.hockey',
+    'preps.apps.sports.field_hockey',
 )

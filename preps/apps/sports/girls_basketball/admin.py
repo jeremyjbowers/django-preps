@@ -14,16 +14,16 @@ class GameAdmin(admin.ModelAdmin):
         }),
         ('Scoreboard', {
             'fields': (
-                ('home_q1_score', 'home_q2_score', 'home_q3_score', 'home_q4_score'), 
-                ('home_ot1_score', 'home_ot2_score', 'home_ot3_score'),
+                ('home_quarter_1_score', 'home_quarter_2_score', 'home_quarter_3_score', 'home_quarter_4_score'), 
+                ('home_overtime_1_score', 'home_overtime_2_score', 'home_overtime_3_score'),
                 ('home_total_score')
             ),
             'classes': ('scoreboard',),
         }),
         (None, {
             'fields': (
-                ('away_q1_score', 'away_q2_score', 'away_q3_score', 'away_q4_score'), 
-                ('away_ot1_score', 'away_ot2_score', 'away_ot3_score'), 
+                ('away_quarter_1_score', 'away_quarter_2_score', 'away_quarter_3_score', 'away_quarter_4_score'), 
+                ('away_overtime_1_score', 'away_overtime_2_score', 'away_overtime_3_score'), 
                 ('away_total_score')
             ),
             'classes': ('scoreboard',),

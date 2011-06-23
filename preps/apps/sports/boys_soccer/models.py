@@ -7,7 +7,7 @@ from preps.apps.utils import functions as preps_utils
 
 class BoysSoccerFields(models.Model):
     '''
-    Represents statistics fields for Girls Soccer. Used like a mixin.
+    Represents statistics fields for Boys Soccer. Used like a mixin.
     '''
     soccer_games                    = models.IntegerField(default=0, blank=True)
     soccer_goals                    = models.IntegerField(default=0, blank=True)
@@ -18,7 +18,7 @@ class BoysSoccerFields(models.Model):
 
 class Position(ModelBase):
     '''
-    Represents a single Girls Soccer position.
+    Represents a single Boys Soccer position.
     '''
     name                            = models.CharField(max_length=255)
     short_name                      = models.CharField(max_length=5, help_text="5 characters or fewer.")
@@ -34,18 +34,17 @@ class Position(ModelBase):
 
 class Game(GameBase):
     '''
-    A representation of a Girls Soccer game.
+    A representation of a Boys Soccer game.
     '''
-    season                          = models.ForeignKey(Season, related_name="boys_soccer_game_season")
-    home_h1_score                   = models.IntegerField(default=0, blank=True)
-    home_h2_score                   = models.IntegerField(default=0, blank=True)
-    home_ot_score                   = models.IntegerField(default=0, blank=True)
-    away_h1_score                   = models.IntegerField(default=0, blank=True)
-    away_h2_score                   = models.IntegerField(default=0, blank=True)
-    away_ot_score                   = models.IntegerField(default=0, blank=True)
-    override_game_scores            = models.BooleanField(default=False)
-    home_team                       = models.ForeignKey(School, related_name="boys_soccer_home_team", null=True)
-    away_team                       = models.ForeignKey(School, related_name="boys_soccer_away_team", null=True)
+    season                          = models.ForeignKey(Season, related_name="girls_soccer_game_season")
+    home_half_1_score               = models.IntegerField(default=0, blank=True)
+    home_half_2_score               = models.IntegerField(default=0, blank=True)
+    home_overtime_score             = models.IntegerField(default=0, blank=True)
+    away_half_1_score               = models.IntegerField(default=0, blank=True)
+    away_half_2_score               = models.IntegerField(default=0, blank=True)
+    away_overtime_score             = models.IntegerField(default=0, blank=True)
+    home_team                       = models.ForeignKey(School, related_name="girls_soccer_home_team", null=True)
+    away_team                       = models.ForeignKey(School, related_name="girls_soccer_away_team", null=True)
     
     def __unicode__(self):
         return u'Week %s: %s at %s' % (self.week, self.away_team, self.home_team)
@@ -53,12 +52,18 @@ class Game(GameBase):
     def save(self, *args, **kwargs):
         if self.slug == None or self.slug == '':
             self.slug               = slugify(self.__unicode__())
+        self.home_total_score   =   self.home_half_1_score+\
+                                    self.home_half_2_score+\
+                                    self.home_overtime_score
+        self.away_total_score   =   self.away_half_1_score+\
+                                    self.away_half_2_score+\
+                                    self.home_overtime_score
         super(Game, self).save(*args, **kwargs)
     
 
 class TeamGame(GameBase, BoysSoccerFields):
     '''
-    Represents single Girls Soccer team's performance in a single game.
+    Represents single Boys Soccer team's performance in a single game.
     '''
     team                            = models.ForeignKey(School, related_name="boys_soccer_teamgame_team")
     game                            = models.ForeignKey(Game, related_name="boys_soccer_teamgame_game")
@@ -74,7 +79,7 @@ class TeamGame(GameBase, BoysSoccerFields):
 
 class TeamSeason(ModelBase, BoysSoccerFields):
     '''
-    Represents a single Girls Soccer team's performance over a season.
+    Represents a single Boys Soccer team's performance over a season.
     '''
     team                            = models.ForeignKey(School, related_name="boys_soccer_teamseason_team")
     season                          = models.ForeignKey(Season, related_name="boys_soccer_teamseason_season")
@@ -107,7 +112,7 @@ class TeamSeason(ModelBase, BoysSoccerFields):
 
 class PlayerGame(GameBase, BoysSoccerFields):
     '''
-    Represents a single Girls Soccer player's performance in a single game.
+    Represents a single Boys Soccer player's performance in a single game.
     '''
     player                          = models.ForeignKey(Player, related_name="boys_soccer_playergame_player")
     game                            = models.ForeignKey(Game, related_name="boys_soccer_playergame_game")
@@ -126,7 +131,7 @@ class PlayerGame(GameBase, BoysSoccerFields):
 
 class PlayerSeason(ModelBase, BoysSoccerFields):
     '''
-    Represents a single Girls Soccer player's performance over a single season.
+    Represents a single Boys Soccer player's performance over a single season.
     '''
     player                          = models.ForeignKey(Player, related_name="boys_soccer_playerseason_player")
     season                          = models.ForeignKey(Season, related_name="boys_soccer_playerseason_season")

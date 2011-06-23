@@ -37,13 +37,12 @@ class Game(GameBase):
     A representation of a Girls Soccer game.
     '''
     season                          = models.ForeignKey(Season, related_name="girls_soccer_game_season")
-    home_h1_score                   = models.IntegerField(default=0, blank=True)
-    home_h2_score                   = models.IntegerField(default=0, blank=True)
-    home_ot_score                   = models.IntegerField(default=0, blank=True)
-    away_h1_score                   = models.IntegerField(default=0, blank=True)
-    away_h2_score                   = models.IntegerField(default=0, blank=True)
-    away_ot_score                   = models.IntegerField(default=0, blank=True)
-    override_game_scores            = models.BooleanField(default=False)
+    home_half_1_score               = models.IntegerField(default=0, blank=True)
+    home_half_2_score               = models.IntegerField(default=0, blank=True)
+    home_overtime_score             = models.IntegerField(default=0, blank=True)
+    away_half_1_score               = models.IntegerField(default=0, blank=True)
+    away_half_2_score               = models.IntegerField(default=0, blank=True)
+    away_overtime_score             = models.IntegerField(default=0, blank=True)
     home_team                       = models.ForeignKey(School, related_name="girls_soccer_home_team", null=True)
     away_team                       = models.ForeignKey(School, related_name="girls_soccer_away_team", null=True)
     
@@ -53,6 +52,12 @@ class Game(GameBase):
     def save(self, *args, **kwargs):
         if self.slug == None or self.slug == '':
             self.slug               = slugify(self.__unicode__())
+        self.home_total_score   =   self.home_half_1_score+\
+                                    self.home_half_2_score+\
+                                    self.home_overtime_score
+        self.away_total_score   =   self.away_half_1_score+\
+                                    self.away_half_2_score+\
+                                    self.home_overtime_score
         super(Game, self).save(*args, **kwargs)
     
 

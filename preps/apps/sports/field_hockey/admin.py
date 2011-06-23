@@ -1,5 +1,5 @@
 from django.contrib import admin
-from preps.apps.sports.boys_lacrosse.models import *
+from preps.apps.sports.field_hockey.models import *
 
 class GameAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -23,7 +23,7 @@ class GameAdmin(admin.ModelAdmin):
             ),
             'classes': ('scoreboard',),
         }),
-        (None, {
+        ('Scoreboard', {
             'fields': (
                 ('away_quarter_1_score', 'away_quarter_2_score', 'away_quarter_3_score', 'away_quarter_4_score'), 
                 ('away_overtime_1_score', 'away_overtime_2_score', 'away_overtime_3_score'), 

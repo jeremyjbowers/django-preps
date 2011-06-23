@@ -110,6 +110,7 @@ class GameBase(ModelBase):
     Abstract base class for games.
     '''
     game_date_time                  = models.DateTimeField(blank=True, null=True)
+    override_game_scores            = models.BooleanField(default=False)
     STATUS_CHOICES = (
         (0, 'Pregame'),
         (1, 'In progress'),

@@ -38,21 +38,21 @@ class Game(GameBase):
     home_team                       = models.ForeignKey(School, related_name="boys_lacrosse_home_team", null=True)
     away_team                       = models.ForeignKey(School, related_name="boys_lacrosse_away_team", null=True)
     season                          = models.ForeignKey(Season, related_name="boys_lacrosse_game_season")
-    home_q1_score                   = models.IntegerField(default=0, blank=True)
-    home_q2_score                   = models.IntegerField(default=0, blank=True)
-    home_q3_score                   = models.IntegerField(default=0, blank=True)
-    home_q4_score                   = models.IntegerField(default=0, blank=True)
-    home_ot1_score                  = models.IntegerField(default=0, blank=True)
-    home_ot2_score                  = models.IntegerField(default=0, blank=True)
-    home_ot3_score                  = models.IntegerField(default=0, blank=True)
+    home_quarter_1_score            = models.IntegerField(default=0, blank=True)
+    home_quarter_2_score            = models.IntegerField(default=0, blank=True)
+    home_quarter_3_score            = models.IntegerField(default=0, blank=True)
+    home_quarter_4_score            = models.IntegerField(default=0, blank=True)
+    home_overtime_1_score           = models.IntegerField(default=0, blank=True)
+    home_overtime_2_score           = models.IntegerField(default=0, blank=True)
+    home_overtime_3_score           = models.IntegerField(default=0, blank=True)
     home_total_score                = models.IntegerField(default=0, blank=True)
-    away_q1_score                   = models.IntegerField(default=0, blank=True)
-    away_q2_score                   = models.IntegerField(default=0, blank=True)
-    away_q3_score                   = models.IntegerField(default=0, blank=True)
-    away_q4_score                   = models.IntegerField(default=0, blank=True)
-    away_ot1_score                  = models.IntegerField(default=0, blank=True)
-    away_ot2_score                  = models.IntegerField(default=0, blank=True)
-    away_ot3_score                  = models.IntegerField(default=0, blank=True)
+    away_quarter_1_score            = models.IntegerField(default=0, blank=True)
+    away_quarter_2_score            = models.IntegerField(default=0, blank=True)
+    away_quarter_3_score            = models.IntegerField(default=0, blank=True)
+    away_quarter_4_score            = models.IntegerField(default=0, blank=True)
+    away_overtime_1_score           = models.IntegerField(default=0, blank=True)
+    away_overtime_2_score           = models.IntegerField(default=0, blank=True)
+    away_overtime_3_score           = models.IntegerField(default=0, blank=True)
     away_total_score                = models.IntegerField(default=0, blank=True)
     week                            = models.IntegerField(max_length=2, default=0)
     game_of_the_week                = models.BooleanField(default=False)
@@ -63,20 +63,20 @@ class Game(GameBase):
     def save(self, *args, **kwargs):
         if self.slug == None or self.slug == '':
             self.slug = slugify(self.__unicode__())
-        self.home_total_score   =   self.home_q1_score+\
-                                    self.home_q2_score+\
-                                    self.home_q3_score+\
-                                    self.home_q4_score+\
-                                    self.home_ot1_score+\
-                                    self.home_ot2_score+\
-                                    self.home_ot3_score
-        self.away_total_score   =   self.away_q1_score+\
-                                    self.away_q2_score+\
-                                    self.away_q3_score+\
-                                    self.away_q4_score+\
-                                    self.away_ot1_score+\
-                                    self.away_ot2_score+\
-                                    self.away_ot3_score
+        self.home_total_score   =   self.home_quarter_1_score+\
+                                    self.home_quarter_2_score+\
+                                    self.home_quarter_3_score+\
+                                    self.home_quarter_4_score+\
+                                    self.home_overtime_1_score+\
+                                    self.home_overtime_2_score+\
+                                    self.home_overtime_3_score
+        self.away_total_score   =   self.away_quarter_1_score+\
+                                    self.away_quarter_2_score+\
+                                    self.away_quarter_3_score+\
+                                    self.away_quarter_4_score+\
+                                    self.away_overtime_1_score+\
+                                    self.away_overtime_2_score+\
+                                    self.away_overtime_3_score
         super(Game, self).save(*args, **kwargs)
     
 

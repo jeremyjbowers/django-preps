@@ -52,7 +52,6 @@ class Game(GameBase):
     away_game_5_score               = models.IntegerField(default=0, blank=True)
     home_games_won                  = models.IntegerField(default=0, blank=True)
     away_games_won                  = models.IntegerField(default=0, blank=True)
-    override_game_scores            = models.BooleanField(default=False)
     home_team                       = models.ForeignKey(School, related_name="volleyball_home_team", null=True)
     away_team                       = models.ForeignKey(School, related_name="volleyball_away_team", null=True)
     
