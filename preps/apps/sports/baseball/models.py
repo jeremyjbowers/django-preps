@@ -75,7 +75,6 @@ class Game(GameBase):
     away_inning_9_score             = models.IntegerField(default=0, blank=True)
     home_total_score                = models.IntegerField(default=0, blank=True)
     away_total_score                = models.IntegerField(default=0, blank=True)
-    override_game_scores            = models.BooleanField(default=False)
     home_team                       = models.ForeignKey(School, related_name="baseball_home_team", null=True)
     away_team                       = models.ForeignKey(School, related_name="baseball_away_team", null=True)
     
