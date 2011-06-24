@@ -69,8 +69,7 @@ class School(ModelBase):
     mascot                          = models.CharField(max_length=255, blank=True, null=True)
     logo_url                        = models.URLField(blank=True, null=True)
     use_custom_logo                 = models.BooleanField(default=False)
-    boys_football                   = models.BooleanField(default=False)
-    girls_volleyball                = models.BooleanField(default=False)
+    active_sports                   = models.ManyToManyField(Sport, null=True)
     
     def __unicode__(self):
         if self.mascot:
@@ -109,23 +108,23 @@ class GameBase(ModelBase):
     '''
     Abstract base class for games.
     '''
-    game_date_time                  = models.DateTimeField(blank=True, null=True)
-    override_game_scores            = models.BooleanField(default=False)
-    STATUS_CHOICES = (
+    GAME_STATUS_CHOICES = (
         (0, 'Pregame'),
         (1, 'In progress'),
         (2, 'Delayed'),
         (3, 'Postponed'),
         (9, 'Final'),
     )
-    status                          = models.IntegerField(max_length=1, choices=STATUS_CHOICES, default=0)
-    status_description              = models.TextField(blank=True, null=True)
-    TYPE_CHOICES = (
+    GAME_TYPE_CHOICES = (
         (0, 'Preseason'),
         (1, 'Regular season'),
         (9, 'Playoff'),
     )
-    game_type                       = models.IntegerField(max_length=1, choices=TYPE_CHOICES, default=0)
+    game_date_time                  = models.DateTimeField(blank=True, null=True)
+    override_game_scores            = models.BooleanField(default=False)
+    status                          = models.IntegerField(max_length=1, choices=GAME_STATUS_CHOICES, default=0)
+    status_description              = models.TextField(blank=True, null=True)
+    game_type                       = models.IntegerField(max_length=1, choices=GAME_TYPE_CHOICES, default=0)
     featured_game                   = models.BooleanField(default=False)
     game_location                   = models.CharField(max_length=255, blank=True, null=True)
     game_location_address           = models.TextField(blank=True, null=True)
@@ -133,6 +132,37 @@ class GameBase(ModelBase):
     conference_game                 = models.BooleanField(default=False)
     game_result_headline            = models.CharField(max_length=255, blank=True, null=True)
     game_result_summary             = models.TextField(blank=True, null=True)
+    
+    class Meta:
+        abstract=True
+
+class MeetBase(ModelBase):
+    '''
+    Abstract base class for meets.
+    '''
+    MEET_STATUS_CHOICES = (
+        (0, 'Pregame'),
+        (1, 'In progress'),
+        (2, 'Delayed'),
+        (3, 'Postponed'),
+        (9, 'Final'),
+    )
+    MEET_TYPE_CHOICES = (
+        (0, 'Preseason'),
+        (1, 'Regular season'),
+        (9, 'Playoff'),
+    )
+    meet_date_time                  = models.DateTimeField(blank=True, null=True)
+    status                          = models.IntegerField(max_length=1, choices=MEET_STATUS_CHOICES, default=0)
+    status_description              = models.TextField(blank=True, null=True)
+    meet_type                       = models.IntegerField(max_length=1, choices=MEET_TYPE_CHOICES, default=0)
+    featured_meet                   = models.BooleanField(default=False)
+    meet_location                   = models.CharField(max_length=255, blank=True, null=True)
+    meet_location_address           = models.TextField(blank=True, null=True)
+    meet_location_description       = models.TextField(blank=True, null=True)
+    conference_meet                 = models.BooleanField(default=False)
+    meet_result_headline            = models.CharField(max_length=255, blank=True, null=True)
+    meet_result_summary             = models.TextField(blank=True, null=True)
     
     class Meta:
         abstract=True
