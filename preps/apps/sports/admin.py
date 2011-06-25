@@ -38,15 +38,17 @@ class ConferenceAdmin(admin.ModelAdmin):
     )    
 
 class SchoolAdmin(admin.ModelAdmin):
+    filter_horizontal = ('active_sports',)
     fieldsets = (
         ('Basic information', {
-            'fields': ('name', 'mascot', 'address', 'local', 'active', 'url')
+            'fields': (
+                ('name', 'mascot', 'address', 'url'), 
+                ('active_sports'),
+                ('local', 'active'),
+            )
         }),
         ('Logo', {
             'fields': ('use_custom_logo', 'logo_url')
-        }),
-        ('Sports', {
-            'fields': ('boys_football', 'girls_volleyball')
         }),
         ('Advanced', {
             'fields': ('slug',),

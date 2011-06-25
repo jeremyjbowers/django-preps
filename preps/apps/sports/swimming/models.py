@@ -7,13 +7,13 @@ from preps.apps.utils import functions as preps_utils
 
 class Meet(MeetBase):
     season                          = models.ForeignKey(Season, related_name='swimming_meet_season')
-	teams 							= models.ManyToManyField(School, null=True)
-	
-	def __unicode__(self):
-		if self.meet_date_and_time == None or self.meet_date_and_time == '':
-        	return u'Meet: %s swimming (%s)' % (self.get_status_display(), self.id)
-		else:
-			return u'Meet [%s]: %s swimming (%s)' % (self.meet_date_and_time, self.get_status_display(), self.id) 
+    teams                           = models.ManyToManyField(School, null=True, related_name='swimming_meet_teams')
+    
+    def __unicode__(self):
+        if self.meet_date_and_time == None or self.meet_date_and_time == '':
+            return u'Meet: %s swimming (%s)' % (self.get_status_display(), self.id)
+        else:
+            return u'Meet [%s]: %s swimming (%s)' % (self.meet_date_and_time, self.get_status_display(), self.id) 
     
     def save(self, *args, **kwargs):
         if self.slug == None or self.slug == '':

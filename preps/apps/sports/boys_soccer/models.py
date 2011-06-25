@@ -36,15 +36,15 @@ class Game(GameBase):
     '''
     A representation of a Boys Soccer game.
     '''
-    season                          = models.ForeignKey(Season, related_name="girls_soccer_game_season")
+    season                          = models.ForeignKey(Season, related_name="boys_soccer_game_season")
     home_half_1_score               = models.IntegerField(default=0, blank=True)
     home_half_2_score               = models.IntegerField(default=0, blank=True)
     home_overtime_score             = models.IntegerField(default=0, blank=True)
     away_half_1_score               = models.IntegerField(default=0, blank=True)
     away_half_2_score               = models.IntegerField(default=0, blank=True)
     away_overtime_score             = models.IntegerField(default=0, blank=True)
-    home_team                       = models.ForeignKey(School, related_name="girls_soccer_home_team", null=True)
-    away_team                       = models.ForeignKey(School, related_name="girls_soccer_away_team", null=True)
+    home_team                       = models.ForeignKey(School, related_name="boys_soccer_home_team", null=True)
+    away_team                       = models.ForeignKey(School, related_name="boys_soccer_away_team", null=True)
     
     def __unicode__(self):
         return u'Week %s: %s at %s' % (self.week, self.away_team, self.home_team)

@@ -14,8 +14,8 @@ class GameAdmin(admin.ModelAdmin):
         }),
         ('Scoreboard', {
             'fields': (
-                ('home_half_1_score', 'home_half_2_score', 'home_ot_score'), 
-                ('away_half_1_score', 'away_half_2_score', 'away_ot_score')
+                ('home_half_1_score', 'home_half_2_score', 'home_overtime_score'), 
+                ('away_half_1_score', 'away_half_2_score', 'away_overtime_score')
             ),
             'classes': ('scoreboard',),
         }),
