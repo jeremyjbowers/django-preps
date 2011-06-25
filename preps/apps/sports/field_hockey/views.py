@@ -2,11 +2,11 @@ from django.views.generic import dates
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.db.models import Q
-from preps.apps.sports.volleyball.models import Game, TeamGame, TeamSeason, PlayerGame, PlayerSeason
+from preps.apps.sports.field_hockey.models import Game, TeamGame, TeamSeason, PlayerGame, PlayerSeason
 
 class GameDetail(DetailView):
 	'''
-	A detail view of a Volleyball game
+	A detail view of a Field Hockey game
 	'''
 	context_object_name = "games"
 	queryset = Game.objects.all()
