@@ -39,7 +39,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'active', 'publication_date', 'author',)
     list_editable = ('active', 'publication_date',)
     search_fields = ('title', 'blurb', 'body',)
-    filter_horizontal = ('players', 'teams')
+    filter_horizontal = ['players', 'teams']
     fieldsets = (
         ('Basics', {
             'fields': ('title', 'lead_image', 'blurb', 'body', 'active', 'publication_date', 'author',)
