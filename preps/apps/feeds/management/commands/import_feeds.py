@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 import datetime, feedparser, os, string
 from datetime import timedelta
-from string import encode, decode
-from BeautifulSoup import BeautifulSoup
+import string
 from django.core.management.base import BaseCommand, CommandError
 from django.template.defaultfilters import slugify, urlize, striptags, escape
 from preps.apps.feeds.models import FeedCollection, Feed, FeedItem
@@ -16,9 +15,8 @@ class Command(BaseCommand):
         Defines a function which fetches RSS feed items.
         '''
         
-        # Get all of the feeds. 
-        # I SAID ALL OF THEM, SMITHERS.
-        feeds = Feed.objects.all()
+        # Get active feeds.
+        feeds = Feed.objects.filter(active=True)
         
         # Deactivate old feed items in preparation for replacing them with newer ones.
         if feeds.count() > 0:

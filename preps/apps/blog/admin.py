@@ -39,17 +39,13 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'active', 'publication_date', 'author',)
     list_editable = ('active', 'publication_date',)
     search_fields = ('title', 'blurb', 'body',)
-    prepopulated_fields = {'slug': ('title', )}
+    filter_horizontal = ('players', 'teams')
     fieldsets = (
         ('Basics', {
             'fields': ('title', 'lead_image', 'blurb', 'body', 'active', 'publication_date', 'author',)
         }),
         ('Links', {
             'fields': (('players', 'teams'), )
-        }),
-        ('Advanced', {
-            'fields': ('slug',),
-            'classes': ('collapse',)
         })
     )
     inlines = [

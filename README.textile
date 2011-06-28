@@ -16,4 +16,4 @@ h2. Features
 * Standard mid-atlantic sports for Fall, Winter and Spring.
 * Blog and photo gallery apps.
 * Full RESTful API for all major site resources.
-* Django's CRUD API for site management.
+* Django's CRUD admin for site management.

@@ -1,16 +1,23 @@
 from django.db import models
+from preps.apps.models import ModelBase
+from django.template.defaultfilters import slugify
 
 class FeedCollection(ModelBase):
     name = models.CharField(max_length=255)
     
     class Meta:
-        ordering = ['widget_name']
+        ordering = ['name']
     
     def __unicode__(self):
-        return self.widget_name
+        return self.name
     
     def get_related_feeds(self):
-        return Feed.objects.filter(widget__id=self.id)
+        return Feed.objects.filter(feed_collection__id=self.id)
+    
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(FeedCollection, self).save(*args, **kwargs)
     
 
 class Feed(ModelBase):
@@ -22,16 +29,21 @@ class Feed(ModelBase):
         return self.feed_name
     
     def get_related_feeditems(self):
-        related = FeedItem.objects.filter(feed_name__id=self.id)
+        related = FeedItem.objects.filter(feed__id=self.id)
         return related
     
     def kill_old_feeditems(self):
         tombstones = []
         feeds = FeedItem.objects.filter(feed_name__id=self.id).filter(active=False)
         for item in feeds:
-            tombstones.append('%s (%s) %s' % (r.feed_name, r.id, r.headline))
+            tombstones.append('%s (%s) %s' % (item.feed_name, item.id, item.headline))
         feeds.delete()
         return tombstones
+    
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(Feed, self).save(*args, **kwargs)
     
 
 class FeedItem(ModelBase):
@@ -48,3 +60,10 @@ class FeedItem(ModelBase):
     @property
     def get_pretty_date(self):
         return self.publication_date.strftime('%I:%M%p %x')
+    
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(FeedItem, self).save(*args, **kwargs)
+    
+

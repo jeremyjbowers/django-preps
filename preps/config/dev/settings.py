@@ -30,4 +30,6 @@ INSTALLED_APPS = (
     'preps.apps.sports.track',
     'preps.apps.sports.cross_country',
     'preps.apps.blog',
+    'preps.apps.feeds',
+    'preps.apps.photos',
 )

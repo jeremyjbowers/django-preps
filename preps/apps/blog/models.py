@@ -23,6 +23,11 @@ class Post(ModelBase):
     def __unicode__(self):
         return self.title
     
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(Post, self).save(*args, **kwargs)
+    
 
 class RecruitingCollege(ModelBase):
     name                            = models.CharField(max_length=255)
@@ -33,6 +38,11 @@ class RecruitingCollege(ModelBase):
     
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(RecruitingCollege, self).save(*args, **kwargs)
 
 class RecruitingUpdate(ModelBase):
     COMMITMENT_CHOICES = (
@@ -55,6 +65,11 @@ class RecruitingUpdate(ModelBase):
     
     def __unicode__(self):
         return "Update %s: %s" % (self.id, self.player)
+    
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(RecruitingUpdate, self).save(*args, **kwargs)
 
 class TopAthletes(models.Model):
     post                            = models.ForeignKey(Post, related_name="topathletelist_set")
@@ -69,6 +84,11 @@ class TopAthletes(models.Model):
     
     def __unicode__(self):
         return "%s.) %s (id: %s/post: %s)" % (self.rank, self.player, self.id, self.post.id)
+    
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(TopAthletes, self).save(*args, **kwargs)
 
 class TopTeams(models.Model):
     post                            = models.ForeignKey(Post, related_name="topteamlist_set")
@@ -83,3 +103,8 @@ class TopTeams(models.Model):
     
     def __unicode__(self):
         return "%s.) %s (id: %s/post: %s)" % (self.rank, self.team, self.id, self.post.id)
+    
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(TopTeams, self).save(*args, **kwargs)
