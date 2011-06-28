@@ -4,8 +4,8 @@ from preps.apps.home.models import SiteSection, PhotoBoxItem, TextBoxItem
 class TextBoxItemAdmin(admin.ModelAdmin):
     list_display                    = ['headline', 'active', 'weight', 'position']
     list_editable                   = ['active', 'weight', 'position']
-    fieldsets                       = 
-    (
+    filter_horizontal               = ['site_section',]
+    fieldsets                       = (
         ('Basics', {
             'fields': (
                 ('headline', 'show_headline'), 
@@ -15,7 +15,7 @@ class TextBoxItemAdmin(admin.ModelAdmin):
                 ('weight', 'active'),
             )
         }),
-    ,)
+    )
 
 class SiteSectionAdmin(admin.ModelAdmin):
     list_display                    = ['name', 'weight']
