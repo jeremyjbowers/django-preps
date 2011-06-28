@@ -35,7 +35,6 @@ class RecruitingUpdateInline(admin.TabularInline):
     allow_add = True
 
 class PostAdmin(admin.ModelAdmin):
-    raw_id_fields = ('players', 'teams')
     list_display = ('title', 'active', 'publication_date', 'author',)
     list_editable = ('active', 'publication_date',)
     search_fields = ('title', 'blurb', 'body',)
