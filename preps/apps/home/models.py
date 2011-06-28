@@ -1,46 +1,53 @@
 from django.db import models
+from preps.apps.models import ModelBase
 
-class BoxPosition(models.Model):
-    position = models.CharField(max_length=150)
-    
-    def __unicode__(self):
-        return self.position
-    
-
-class SiteSection(models.Model):
-    site_section = models.CharField(max_length=150)
-    site_section_slug = models.SlugField()
-    site_section_short_name = models.CharField(max_length=150)
-    site_section_seo_description = models.TextField(blank=True, null=True)
-    site_section_seo_title = models.CharField(max_length=255, blank=True, null=True)
-    weight = models.IntegerField(max_length=3, default=0)
+class SiteSection(ModelBase):
+    name                = models.CharField(max_length=150)
+    display_name        = models.CharField(max_length=150)
+    weight              = models.IntegerField(max_length=2, default=0)
     
     class Meta:
         ordering = ['-weight']
     
     def __unicode__(self):
         return self.site_section
+        
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(SiteSection, self).save(*args, **kwargs)
     
 
-class PhotoBoxItem(models.Model):
-    headline = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
-    link = models.CharField(max_length=255)
-    photograph = models.ImageField(upload_to="photobox/")
-    created = models.DateTimeField(auto_now_add=True)
+class PhotoBoxItem(ModelBase):
+    headline            = models.CharField(max_length=255)
+    body                = models.CharField(max_length=255)
+    link                = models.URLField(verify_exists=False, max_length=255)
+    photo               = models.ImageField(upload_to="home/photo_box/images/")
     
     def __unicode__(self):
         return self.headline
     
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(PhotoBoxItem, self).save(*args, **kwargs)
+    
 
-class HTMLTextBox(models.Model):
-    site_section = models.ManyToManyField(SiteSection, blank=True, null=True)
-    title = models.CharField(max_length=255)
-    body_text = models.TextField()
-    show_header = models.BooleanField()
-    position = models.ForeignKey(BoxPosition)
-    weight = models.IntegerField(max_length=3, default=0)
-    lead_art = models.ImageField(upload_to="box/art/", blank=True, null=True)
+class TextBoxItem(ModelBase):
+    POSITION_CHOICES = (
+        (0,'Not displayed'),
+        (1,'Left rail'),
+        (2,'Right rail'),
+        (8,'Top banner'),
+        (9,'Bottom banner'),
+    )
+    site_section        = models.ManyToManyField(SiteSection, null=True, related_name='home_html_box_site_sections')
+    headline            = models.CharField(max_length=255)
+    body                = models.TextField()
+    show_headline       = models.BooleanField()
+    position            = models.IntegerField(max_length=1, choices=POSITION_CHOICES, default=0)
+    weight              = models.IntegerField(max_length=2, default=0)
+    photo               = models.ImageField(upload_to="home/html_box/images/", blank=True, null=True)
     
     class Meta:
         verbose_name_plural = "HTML text boxes"
@@ -49,11 +56,8 @@ class HTMLTextBox(models.Model):
     def __unicode__(self):
         return self.title
     
-
-class QuickLink(models.Model):
-    title = models.CharField(max_length=255)
-    link = models.CharField(max_length=255)
-    
-    def __unicode__(self):
-        return self.title
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(HTMLTextBox, self).save(*args, **kwargs)
     

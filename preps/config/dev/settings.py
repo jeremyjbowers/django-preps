@@ -32,4 +32,5 @@ INSTALLED_APPS = (
     'preps.apps.blog',
     'preps.apps.feeds',
     'preps.apps.photos',
+    'preps.apps.home',
 )
