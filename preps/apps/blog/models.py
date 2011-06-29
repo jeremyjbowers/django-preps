@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from preps.apps.models import ModelBase
 from preps.apps.sports.models import Player, School
 
@@ -28,6 +29,16 @@ class Post(ModelBase):
             self.slug = slugify(self.__unicode__())
         super(Post, self).save(*args, **kwargs)
     
+    # Use the permalink decorator from models to designate this as our post's absolute URL.
+    @models.permalink
+    # Define our get_absolute_url method.
+    def get_absolute_url(self):
+        '''
+        Defines a function which returns an absolute URL for a model instance.
+        '''
+        # Return the reverse of our 'post_detail' view matching the 'post_slug' and 'pk' to the relevant fields.
+        # Note there's a None in there because we're specifying **kwargs and thus not *args. DON'T CROSS THE STREAMS.
+        return ('post_detail', None, { 'post_slug': self.slug, 'pk': self.id })   
 
 class RecruitingCollege(ModelBase):
     name                            = models.CharField(max_length=255)

@@ -28,3 +28,5 @@ ADMINS = (
      ('Jeremy Bowers', 'jeremyjbowers@gmail.com'),
 )
 MANAGERS = ADMINS
+
+INSTALLED_APPS              = ()
