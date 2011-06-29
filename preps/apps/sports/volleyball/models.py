@@ -160,7 +160,7 @@ class PlayerSeason(ModelBase, VolleyballFields):
     games                           = models.IntegerField(default=0, blank=True)
     
     def __unicode__(self):
-        return u'Week %s: %s stats (%s)' % (self.game.week, self.player, self.id)
+        return u'Season %s: %s stats (%s)' % (self.season.name, self.player, self.id)
     
     def save(self, *args, **kwargs):
         if self.slug == None or self.slug == '':

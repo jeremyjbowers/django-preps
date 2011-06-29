@@ -103,6 +103,9 @@ class Player(ModelBase):
             self.slug               = slugify(self.__unicode__())
         super(Player, self).save(*args, **kwargs)
     
+    @models.permalink
+    def get_absolute_url(self):
+        return ('player_detail', None, { 'player_slug': self.slug, 'pk': self.id })
 
 class GameBase(ModelBase):
     '''

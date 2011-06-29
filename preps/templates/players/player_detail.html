@@ -1,0 +1,18 @@
+<h1>players/player_detail</h1>
+
+{{ player.first_name }} {{ player.last_name }}<br/>
+{{ player.height_feet }}-{{player.height_inches}}, {{ player.weight_pounds }}
+
+{% if football %}
+    {{ football }}
+{% endif %}
+
+{% if volleyball %}<ul>
+    {% for season in volleyball %}
+        <li><strong>{{ season.season }}</strong><br/>
+            Kills: {{ season.volleyball_kills }}<br/>
+            Blocks: {{ season.volleyball_blocks }}<br/>
+            Games: {{ season.volleyball_games }}
+        </li>
+    {% endfor %}
+</ul>{% endif %}

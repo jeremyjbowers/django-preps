@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
+from preps.apps.sports.views import PlayerDetail
 
 urlpatterns = patterns('',
-    # url(r'^football/', include('preps.apps.sports.football.urls')),
-    # url(r'^volleyball/', include('preps.apps.sports.volleyball.urls')),
+    url(r'^(?P<pk>[-\w]+)/(?P<player_slug>[-\w]+)/$', PlayerDetail.as_view(), name="player_detail"),
 )

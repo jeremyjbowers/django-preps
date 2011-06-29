@@ -34,9 +34,9 @@ class Feed(ModelBase):
     
     def kill_old_feeditems(self):
         tombstones = []
-        feeds = FeedItem.objects.filter(feed_name__id=self.id).filter(active=False)
+        feeds = FeedItem.objects.filter(feed__id=self.id).filter(active=False)
         for item in feeds:
-            tombstones.append('%s (%s) %s' % (item.feed_name, item.id, item.headline))
+            tombstones.append('%s (%s) %s' % (item.feed.feed_name, item.id, item.headline))
         feeds.delete()
         return tombstones
     
@@ -55,7 +55,7 @@ class FeedItem(ModelBase):
     publication_date = models.DateTimeField()
     
     def __unicode__(self):
-        return "%s: %s" % (self.feed_name, self.headline)
+        return "%s: %s" % (self.feed.feed_name, self.headline)
     
     @property
     def get_pretty_date(self):
