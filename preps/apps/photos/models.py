@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 from preps.apps.models import ModelBase
 from preps.apps.sports.models import Player, School
 
@@ -18,6 +19,13 @@ class PhotoGallery(ModelBase):
         if self.slug == None or self.slug == '':
             self.slug = slugify(self.__unicode__())
         super(PhotoGallery, self).save(*args, **kwargs)
+
+    @models.permalink
+    def get_absolute_url(self):
+        '''
+        Defines a function which returns an absolute URL for a model instance.
+        '''
+        return ('gallery_detail', None, { 'gallery_slug': self.slug, 'pk': self.id })
 
 class Photo(ModelBase):
     gallery                         = models.ForeignKey(PhotoGallery, related_name='gallery_photo_gallery')

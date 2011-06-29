@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^sports/', include('preps.apps.sports.urls')),
     url(r'^blog/', include('preps.apps.blog.urls')),
+    url(r'^photo-gallery/', include('preps.apps.photos.urls')),
 )
