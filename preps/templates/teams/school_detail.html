@@ -1,0 +1,10 @@
+<h1>teams/school_detail</h1>
+
+{{ team }}
+
+{% if volleyball %}<ul>
+    {% for season in volleyball %}<li><strong>{{ season.season }}</strong><br/>
+        Overall: {{ season.wins }}-{{season.losses}}<br/>
+        Conference: {{ season.conference_wins }}-{{ season.conference_losses }}
+    {% endfor %}
+</ul>{% endif %}

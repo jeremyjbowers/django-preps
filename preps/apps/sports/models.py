@@ -82,6 +82,10 @@ class School(ModelBase):
             self.slug               = slugify(self.__unicode__())
         super(School, self).save(*args, **kwargs)
     
+    @models.permalink
+    def get_absolute_url(self):
+        return ('school_detail', None, { 'school_slug': self.slug, 'pk': self.id })
+    
 
 class Player(ModelBase):
     '''
