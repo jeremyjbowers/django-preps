@@ -18,19 +18,19 @@ class SiteSection(ModelBase):
         super(SiteSection, self).save(*args, **kwargs)
     
 
-class PhotoBoxItem(ModelBase):
-    headline            = models.CharField(max_length=255)
-    body                = models.CharField(max_length=255)
-    link                = models.URLField(verify_exists=False, max_length=255)
-    photo               = models.ImageField(upload_to="home/photo_box/images/")
-    
-    def __unicode__(self):
-        return self.headline
-    
-    def save(self, *args, **kwargs):
-        if self.slug == None or self.slug == '':
-            self.slug = slugify(self.__unicode__())
-        super(PhotoBoxItem, self).save(*args, **kwargs)
+# class PhotoBoxItem(ModelBase):
+#     headline            = models.CharField(max_length=255)
+#     body                = models.CharField(max_length=255)
+#     link                = models.URLField(verify_exists=False, max_length=255)
+#     photo               = models.ImageField(upload_to="home/photo_box/images/")
+#     
+#     def __unicode__(self):
+#         return self.headline
+#     
+#     def save(self, *args, **kwargs):
+#         if self.slug == None or self.slug == '':
+#             self.slug = slugify(self.__unicode__())
+#         super(PhotoBoxItem, self).save(*args, **kwargs)
     
 
 class TextBoxItem(ModelBase):
