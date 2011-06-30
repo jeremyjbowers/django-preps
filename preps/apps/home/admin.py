@@ -1,5 +1,5 @@
 from django.contrib import admin
-from preps.apps.home.models import SiteSection, PhotoBoxItem, TextBoxItem
+from preps.apps.home.models import SiteSection, TextBoxItem
 
 class TextBoxItemAdmin(admin.ModelAdmin):
     list_display                    = ['headline', 'active', 'weight', 'position']
