@@ -5,9 +5,26 @@ from django.template.defaultfilters import slugify
 from preps.apps.models import ModelBase
 from preps.apps.sports.models import Player, School
 
+class Series(ModelBase):
+    name                            = models.CharField(max_length=255)
+    
+    class Meta:
+        verbose_name_plural = "blog post series"
+        ordering = ['-name']
+    
+    def __unicode__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(RecruitingUpdate, self).save(*args, **kwargs)
+    
+
 class Post(ModelBase):
     lead_image                      = models.ImageField(upload_to='blog/images/lead/', blank=True, null=True)
     author                          = models.ForeignKey(User)
+    series                          = models.ForeignKey(Series, null=True)
     title                           = models.CharField(max_length=255, blank=True, null=True)
     blurb                           = models.TextField(blank=True, null=True)
     body                            = models.TextField(blank=True, null=True)
@@ -15,6 +32,7 @@ class Post(ModelBase):
     players                         = models.ManyToManyField(Player, blank=True, null=True, related_name='blog_post_players')
     publication_date                = models.DateTimeField()
     external_media_url              = models.URLField(blank=True, null=True, verify_exists=False)
+    featured                        = models.BooleanField(default=False)
     
     class Meta:
         verbose_name = "post"
@@ -81,8 +99,25 @@ class RecruitingUpdate(ModelBase):
         if self.slug == None or self.slug == '':
             self.slug = slugify(self.__unicode__())
         super(RecruitingUpdate, self).save(*args, **kwargs)
+    
 
-class TopAthletes(models.Model):
+class Link(ModelBase):
+    post                        = models.ForeignKey(Post, null=True)
+    headline                    = models.CharField(max_length=255)
+    link_url                    = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ['-created']
+
+    def __unicode__(self):
+        return self.headline
+
+    def save(self, *args, **kwargs):
+        if self.slug == None or self.slug == '':
+            self.slug = slugify(self.__unicode__())
+        super(Link, self).save(*args, **kwargs)
+
+class TopAthletes(ModelBase):
     post                            = models.ForeignKey(Post, related_name="topathletelist_set")
     rank                            = models.IntegerField()
     player                          = models.ForeignKey(Player)
@@ -91,7 +126,7 @@ class TopAthletes(models.Model):
     class Meta:
         verbose_name = "Top athlete"
         verbose_name_plural = "Top athletes"
-        ordering = ['id']
+        ordering = ['-created']
     
     def __unicode__(self):
         return "%s.) %s (id: %s/post: %s)" % (self.rank, self.player, self.id, self.post.id)
@@ -101,7 +136,7 @@ class TopAthletes(models.Model):
             self.slug = slugify(self.__unicode__())
         super(TopAthletes, self).save(*args, **kwargs)
 
-class TopTeams(models.Model):
+class TopTeams(ModelBase):
     post                            = models.ForeignKey(Post, related_name="topteamlist_set")
     rank                            = models.IntegerField()
     team                            = models.ForeignKey(School)
@@ -110,7 +145,7 @@ class TopTeams(models.Model):
     class Meta:
         verbose_name = "Top team"
         verbose_name_plural = "Top teams"
-        ordering = ['id']
+        ordering = ['-created']
     
     def __unicode__(self):
         return "%s.) %s (id: %s/post: %s)" % (self.rank, self.team, self.id, self.post.id)

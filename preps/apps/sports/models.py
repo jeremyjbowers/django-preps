@@ -100,7 +100,7 @@ class Player(ModelBase):
     weight_pounds                   = models.IntegerField(max_length=3, default=0)
     
     def __unicode__(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+        return u'%s %s (%s)' % (self.first_name, self.last_name, self.school)
     
     def save(self, *args, **kwargs):
         if self.slug == None or self.slug == '':        
@@ -139,6 +139,8 @@ class GameBase(ModelBase):
     conference_game                 = models.BooleanField(default=False)
     game_result_headline            = models.CharField(max_length=255, blank=True, null=True)
     game_result_summary             = models.TextField(blank=True, null=True)
+    game_live_audio                 = models.CharField(max_length=255, blank=True, null=True)
+    game_live_video                 = models.TextField(blank=True, null=True)
     
     class Meta:
         abstract=True

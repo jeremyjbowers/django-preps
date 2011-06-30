@@ -23,8 +23,11 @@ class Match(GameBase):
     away_set_5_score                = models.IntegerField(default=0, blank=True)
     home_sets_won                   = models.IntegerField(default=0, blank=True)
     away_sets_won                   = models.IntegerField(default=0, blank=True)
-    home_player                     = models.ForeignKey(School, related_name="tennis_home_player", null=True)
-    home_player                     = models.ForeignKey(School, related_name="tennis_away_player", null=True)
+    home_player                     = models.ForeignKey(Player, related_name="tennis_home_player", null=True)
+    away_player                     = models.ForeignKey(Player, related_name="tennis_away_player", null=True)
+    
+    class Meta:
+        verbose_name_plural = 'matches'
     
     def __unicode__(self):
         return u'Week %s: %s at %s' % (self.week, self.away_team, self.home_team)

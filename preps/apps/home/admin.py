@@ -25,4 +25,4 @@ class SiteSectionAdmin(admin.ModelAdmin):
 
 admin.site.register(TextBoxItem, TextBoxItemAdmin)
 admin.site.register(SiteSection, SiteSectionAdmin)
-admin.site.register(PhotoBoxItem)
+# admin.site.register(PhotoBoxItem)
