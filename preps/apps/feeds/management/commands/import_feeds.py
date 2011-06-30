@@ -46,9 +46,9 @@ class Command(BaseCommand):
                             f = FeedItem(
                                 feed_collection=collection,
                                 feed=feed,
-                                headline=entry.title.encode('utf-8', 'replace'),
-                                content=entry.description.encode('utf-8', 'replace'),
-                                story_link=entry.link,
+                                headline=entry.title.encode('utf-8'),
+                                content=entry.description.encode('utf-8'),
+                                story_link=entry.link.encode('utf-8'),
                                 active=True,
                                 publication_date=datetime.datetime(
                                     entry.date_parsed[0], 

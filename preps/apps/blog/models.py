@@ -18,16 +18,27 @@ class Series(ModelBase):
     def save(self, *args, **kwargs):
         if self.slug == None or self.slug == '':
             self.slug = slugify(self.__unicode__())
-        super(RecruitingUpdate, self).save(*args, **kwargs)
+        super(Series, self).save(*args, **kwargs)
+
+    # Use the permalink decorator from models to designate this as our post's absolute URL.
+    @models.permalink
+    # Define our get_absolute_url method.
+    def get_absolute_url(self):
+        '''
+        Defines a function which returns an absolute URL for a model instance.
+        '''
+        # Return the reverse of our 'post_detail' view matching the 'series_slug' to the relevant field (self.slug).
+        # Note there's a None in there because we're specifying **kwargs and thus not *args. DON'T CROSS THE STREAMS.
+        return ('post_list_series', None, { 'series_slug': self.slug, 'pk': self.id })
     
 
 class Post(ModelBase):
+    title                           = models.CharField(max_length=255)
+    blurb                           = models.TextField(blank=True, null=True)
+    body                            = models.TextField(blank=True, null=True)
     lead_image                      = models.ImageField(upload_to='blog/images/lead/', blank=True, null=True)
     author                          = models.ForeignKey(User)
     series                          = models.ForeignKey(Series, null=True)
-    title                           = models.CharField(max_length=255, blank=True, null=True)
-    blurb                           = models.TextField(blank=True, null=True)
-    body                            = models.TextField(blank=True, null=True)
     teams                           = models.ManyToManyField(School, blank=True, null=True, related_name='blog_post_teams')
     players                         = models.ManyToManyField(Player, blank=True, null=True, related_name='blog_post_players')
     publication_date                = models.DateTimeField()
@@ -47,16 +58,9 @@ class Post(ModelBase):
             self.slug = slugify(self.__unicode__())
         super(Post, self).save(*args, **kwargs)
     
-    # Use the permalink decorator from models to designate this as our post's absolute URL.
     @models.permalink
-    # Define our get_absolute_url method.
     def get_absolute_url(self):
-        '''
-        Defines a function which returns an absolute URL for a model instance.
-        '''
-        # Return the reverse of our 'post_detail' view matching the 'post_slug' and 'pk' to the relevant fields.
-        # Note there's a None in there because we're specifying **kwargs and thus not *args. DON'T CROSS THE STREAMS.
-        return ('post_detail', None, { 'post_slug': self.slug, 'pk': self.id })   
+        return ('post_detail', None, { 'post_slug': self.slug, 'pk': self.id })
 
 class RecruitingCollege(ModelBase):
     name                            = models.CharField(max_length=255)

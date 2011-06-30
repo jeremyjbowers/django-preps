@@ -1,15 +1,37 @@
-<h1>blog/post_list.html</h1>
+<h1>blog/post_list</h1>
 
-<ul>{% for post in posts %}
-	<li>
-		<a href="{{ post.get_absolute_url }}">[{{ post.publication_date }}] {{ post.title }}</a>
-		{% if post.players %}<br/><strong>Players in this post</strong>
-		<ul>
-			{% for player in post.players.all %}<li><a href="{{ player.get_absolute_url }}">{{ player.first_name }} {{ player.last_name }}</a></li>{% endfor %}
-		</ul>{% endif %}
-		{% if post.teams %}<br/><strong>Teams in this post</strong>
-		<ul>
-			{% for team in post.teams.all %}<li><a href="{{ team.get_absolute_url }}">{{ team.name }} {{ team.mascot }}</a></li>{% endfor %}
-		</ul>{% endif %}
-	</li>
-{% endfor %}</ul>	
+{% if series %}Posts in {{ series.name }} ({{ posts|length }}){% endif %}
+
+{% if posts %}
+<ul>
+    {% for post in posts %}
+    <li>
+        <a href="{{ post.get_absolute_url }}">[{{ post.publication_date }}] {{ post.title }}</a>
+        {% if post.series %}
+            <br/><strong>Series</strong>: 
+            <a href="{{ post.series.get_absolute_url }}">{{ post.series.name }}</a>
+        {% endif %}
+        {% if post.players %}
+        <br/><strong>Players in this post:</strong>
+        <ul>
+            {% for player in post.players.all %}
+            <li>
+                <a href="{{ player.get_absolute_url }}">{{ player.first_name }} {{ player.last_name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% if post.teams %}
+        <br/><strong>Teams in this post:</strong>
+        <ul>
+            {% for team in post.teams.all %}
+            <li>
+                <a href="{{ team.get_absolute_url }}">{{ team.name }} {{ team.mascot }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
