@@ -1,6 +1,11 @@
 from django.contrib import admin
-from preps.apps.blog.models import *
+from preps.apps.blog.models import Series, Link, Post, TopAthletes, TopTeams, RecruitingUpdate
 
+class SeriesAdmin(admin.ModelAdmin):
+    model = Series
+    fieldsets = (
+        (None, {'fields': ('name', 'active'), }),
+    )
 class LinkInline(admin.TabularInline):
     model = Link
     extra = 0
@@ -66,4 +71,4 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.register(TopAthletes)
 admin.site.register(TopTeams)
 admin.site.register(Post, PostAdmin)
-admin.site.register(Series)
+admin.site.register(Series, SeriesAdmin)

@@ -29,11 +29,22 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
+    'django.core.context_processors.i18n',
+    'django.contrib.messages.context_processors.messages',
+)
+
+GRAPPELLI_INDEX_DASHBOARD = 'preps.config.grappelli.dashboard.CustomIndexDashboard'
+
 TEMPLATE_DIRS = (
    PROJECT_DIR + '/%s/%s/templates' % (PROJECT_SLUG, PROJECT_MODULE),
 )
 
 INSTALLED_APPS = (
+    'grappelli.dashboard',
+    'grappelli',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -63,4 +74,6 @@ INSTALLED_APPS = (
     'preps.apps.feeds',
     'preps.apps.photos',
     'preps.apps.home',
+    'ckeditor',
+    'sorl.thumbnail',
 )

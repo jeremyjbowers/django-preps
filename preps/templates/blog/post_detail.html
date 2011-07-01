@@ -1,3 +1,7 @@
+{% load thumbnail %}
 <h1>blog/post_detail</h1>
 
+{% thumbnail post.lead_image "25x25" crop="center" as im %}
+    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+{% endthumbnail %}
 {{ post.title }}

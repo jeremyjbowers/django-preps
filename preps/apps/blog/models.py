@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from preps.apps.models import ModelBase
 from preps.apps.sports.models import Player, School
+from ckeditor.fields import HTMLField
+from sorl.thumbnail import ImageField
 
 class Series(ModelBase):
     name                            = models.CharField(max_length=255)
@@ -34,9 +36,9 @@ class Series(ModelBase):
 
 class Post(ModelBase):
     title                           = models.CharField(max_length=255)
-    blurb                           = models.TextField(blank=True, null=True)
-    body                            = models.TextField(blank=True, null=True)
-    lead_image                      = models.ImageField(upload_to='blog/images/lead/', blank=True, null=True)
+    blurb                           = HTMLField(blank=True, null=True)
+    body                            = HTMLField(blank=True, null=True)
+    lead_image                      = ImageField(upload_to='blog/images/lead/', blank=True, null=True)
     author                          = models.ForeignKey(User)
     series                          = models.ForeignKey(Series, null=True)
     teams                           = models.ManyToManyField(School, blank=True, null=True, related_name='blog_post_teams')

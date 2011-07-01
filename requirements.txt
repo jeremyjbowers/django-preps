@@ -11,7 +11,8 @@ sorl-thumbnail              # Photo management and thumbnailing.
 pysolr                      # Search backend. Trust no other.
 ipython                     # Handy.
 pil                         # ImageFields.
-# django-grappelli==2.2     # Makes admin pretty.
-# django-admin-tools        # More admin niceness.
+django-grappelli==2.3.3     # Makes admin pretty.
+django-admin-tools==0.4.0   # More admin niceness.
 feedparser                  # Importing RSS items.
-# django-ckeditor             # Rich text editing.
+git+https://github.com/dwaiter/django-ckeditor.git#egg=django-ckeditor
+yolk                        # pip package inspection.
