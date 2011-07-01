@@ -14,5 +14,5 @@ pil                         # ImageFields.
 django-grappelli==2.3.3     # Makes admin pretty.
 django-admin-tools==0.4.0   # More admin niceness.
 feedparser                  # Importing RSS items.
-git+https://github.com/dwaiter/django-ckeditor.git#egg=django-ckeditor
 yolk                        # pip package inspection.
+# git+https://github.com/dwaiter/django-ckeditor.git#egg=django-ckeditor
