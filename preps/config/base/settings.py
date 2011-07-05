@@ -14,8 +14,6 @@ LANGUAGE_CODE               = 'en-us'
 SITE_ID                     = 1
 USE_L10N                    = True
 
-SECRET_KEY = '1ai9a+8(!l$!0!qhy(*op^_f2w#x&haz2jh#%&0y@qj3))be99'
-
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',

@@ -1,7 +1,7 @@
 from preps.config.base.settings import *
 
 try:
-    from preps.config.dev.local_settings import *
+    from preps.config.prod.local_settings import *
 except ImportError:
     pass
 
